@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>2569597b-7b63-4e5a-ba0f-42d37e671d54</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Notification.SignalR\Notification.SignalR.csproj" />
+    <ProjectReference Include="..\web.client\web.client.esproj" />
+    <ProjectReference Include="..\Web.Server\Web.Server.csproj" />
+  </ItemGroup>
+
+</Project>
