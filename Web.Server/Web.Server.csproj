@@ -7,6 +7,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Grpc.Net.Client" />
+		<PackageReference Include="Grpc.Net.ClientFactory" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaProxy">
@@ -25,10 +27,18 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Notification.ServiceDefaults\Notification.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\Shared\Shared.csproj" />
 		<ProjectReference Include="..\web.client\web.client.esproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		</ProjectReference>
-
+		<PackageReference Include="Grpc.Tools">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>		
 	</ItemGroup>
 
+	<ItemGroup>
+		<Protobuf Include="..\Shared\Protos\notification.proto" GrpcServices="Client" />
+	</ItemGroup>
+	
 </Project>

@@ -7,10 +7,17 @@ public static class MigrationExtensions
 {
     public static void ApplyMigrations(this WebApplication app)
     {
-        using var scope = app.Services.CreateScope();
+        try
+        {
+            using var scope = app.Services.CreateScope();
 
-        var dbContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
 
-        dbContext.Database.Migrate();
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.Migrate();
+        }
+        catch (Exception ex) { 
+            Console.WriteLine($"Migration failed: {ex.Message}");
+        }
     }
 }

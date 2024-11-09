@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Web.Server;
+using Web.Server.Apis;
 using Web.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,8 @@ builder.AddServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.AddIdentityContext();
+builder.AddApplicationServices();
+ 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -30,7 +32,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapIdentityApi<IdentityUser>();
+app.MapWebApi();
 
 var summaries = new[]
 {

@@ -1,0 +1,25 @@
+syntax = "proto3";
+ 
+option csharp_namespace = "Notification.Shared";
+
+service Notification {
+	rpc SendNotification(SendNotificationRequest) returns (SendNotificationReply);
+}
+
+message SendNotificationRequest {
+  string Action = 1;
+  string GroupAction = 2;
+  string GroupId = 3;
+  string AppCode = 4;
+  string Message = 5;
+  string RawData = 6;
+  string UserID = 7;
+  string SenderId = 8;
+  string SenderName = 9;
+  string FromAppCode = 11;
+}
+ 
+message SendNotificationReply {
+  bool Success = 1;
+  string Data = 2;
+}

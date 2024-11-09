@@ -11,15 +11,15 @@ var mongo = builder
             .WithDataVolume();
 var mongodb = mongo.AddDatabase("notificationdb");
 
-builder
-    .AddProject<Projects.Web_Server>("web-server")
-    .WithReference(sqldb);
 
-builder
-    .AddProject<Projects.Notification_SignalR>("signalR")
+var notification = builder
+    .AddProject<Projects.Notification_SignalR>("notification-api")
     .WithReference(mongodb);
 
-builder.AddProject<Projects.web_client>("web-client");
- 
+builder
+    .AddProject<Projects.Web_Server>("web-server")
+    .WithReference(sqldb)
+    .WithReference(notification);
+
 
 builder.Build().Run();
