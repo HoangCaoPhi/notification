@@ -20,7 +20,7 @@ public static class DependencyInjection
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddTransient<IIdentityService, IdentityService>();
-
+ 
         builder.Services.AddProblemDetails();
 
         builder.Services.AddScoped<INotificationService, NotificationService>();

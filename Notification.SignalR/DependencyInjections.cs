@@ -8,6 +8,8 @@ public static class DependencyInjections
     {
         builder.AddMongoDBClient("notificationdb");
         builder.Services.AddScoped<NotificationContext>();
+
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddGrpc(options =>
         {
             if(builder.Environment.IsDevelopment())
@@ -15,5 +17,7 @@ public static class DependencyInjections
                 options.EnableDetailedErrors = true;
             }
         });
+
+        builder.Services.AddSignalR();
     }
 }

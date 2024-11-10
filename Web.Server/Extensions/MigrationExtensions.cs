@@ -12,8 +12,7 @@ public static class MigrationExtensions
             using var scope = app.Services.CreateScope();
 
             var dbContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
-
-            dbContext.Database.EnsureDeleted();
+ 
             dbContext.Database.Migrate();
         }
         catch (Exception ex) { 
