@@ -12,11 +12,11 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post('/api/login', {
-        email: username,
+        username: username,
         password
       });
 
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.data.accessToken);
       localStorage.setItem('username', username);
 
       navigate('/');  

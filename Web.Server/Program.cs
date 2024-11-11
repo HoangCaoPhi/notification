@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Web.Server;
 using Web.Server.Apis;
 using Web.Server.Extensions;
@@ -12,8 +11,6 @@ builder.Services.AddSwaggerGen();
 
 builder.AddApplicationServices();
  
-builder.Services.AddAuthorization();
-
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -36,10 +33,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-var routeGroup = app.MapGroup("/api");
-
-routeGroup.MapIdentityApi<IdentityUser>();
-routeGroup.MapWebApi();
+var routeGroup = app.MapGroup("/api"); 
+routeGroup.MapNotificationApi();
+routeGroup.MapAuthApi();
 
 app.MapFallbackToFile("/index.html");
 

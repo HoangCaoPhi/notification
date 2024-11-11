@@ -13,9 +13,7 @@ const HomePage: React.FC = () => {
       navigate('/login');
       return;
     }
-
-    console.log("Jallfasdfdsf");
-    
+ 
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("https://localhost:7176/notificationHub")
       .configureLogging(signalR.LogLevel.Information)
@@ -32,7 +30,7 @@ const HomePage: React.FC = () => {
     }
 
     connection.on("ReceiveMessage", (user, message) => {
-      console.log("ReceiveMessage");
+      console.log("ReceiveMessage", user);
       
       const notification = JSON.parse(message);
       setNotifications((prev) => [...prev, notification.Message]);

@@ -4,9 +4,9 @@ using Web.Server.Models;
 
 namespace Web.Server.Apis;
 
-public static class WebApi
+public static class NotificationApi
 {
-    public static IEndpointRouteBuilder MapWebApi(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapNotificationApi(this IEndpointRouteBuilder app)
     {
         app.MapPost("/notification", SendNotification)
            .RequireAuthorization();
@@ -19,6 +19,4 @@ public static class WebApi
     {
         await notificationService.SendAsync(notificationRequest);
     }
-
- 
 }

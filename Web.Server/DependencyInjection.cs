@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Net.Http.Headers;
+using Shared;
 using System.Net.Http.Headers;
 using Web.Server.Abtractions;
 using Web.Server.Identity;
@@ -11,23 +12,25 @@ public static class DependencyInjection
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-                        .AddRoles<IdentityRole>()
-                        .AddEntityFrameworkStores<IdentityContext>();
-      
+        builder.AddDefaultAuthentication();
+
+        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
+
         builder.AddSqlServerDbContext<IdentityContext>("identitydb");
 
-        builder.Services.AddHttpContextAccessor();
-
-        builder.Services.AddTransient<IIdentityService, IdentityService>();
- 
+        builder.Services.AddHttpContextAccessor(); 
         builder.Services.AddProblemDetails();
 
         builder.Services.AddScoped<INotificationService, NotificationService>();
+        builder.Services.AddScoped<ITokenProvider, TokenProvider>();    
+        builder.Services.AddScoped<IAuthService, AuthService>();
+
 
         builder.Services.AddGrpcClient<Notification.Shared.Notification.NotificationClient>
-                            (o => o.Address = new("http://notification-api"))
-                        .AddAuthToken();
+                            (o => o.Address = new("https://notification-api"))
+                            .AddAuthToken();
     }
 
     public static IHttpClientBuilder AddAuthToken(this IHttpClientBuilder builder)

@@ -1,5 +1,4 @@
-﻿namespace Web.Server.Abtractions;
-
+﻿namespace Shared;
 public interface IIdentityService
 {
     string? GetUserIdentity();

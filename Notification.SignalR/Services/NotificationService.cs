@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Notification.Shared;
 using Notification.SignalR.Context;
@@ -8,15 +9,13 @@ using static Notification.Shared.Notification;
 
 namespace Notification.SignalR.Services
 {
+    [Authorize]
     public class NotificationService(
         NotificationContext notificationContext,
         IHubContext<NotificationHub, INotificationClient> hubContext) : NotificationBase
     { 
         public override async Task<SendNotificationReply> SendNotification(SendNotificationRequest request, ServerCallContext context)
         {
-            var user = context.GetHttpContext().User;
-            var userId = user.Identity?.Name;
-
             var notification = new Models.Notification
             {
                 Action = request.Action,
@@ -29,12 +28,16 @@ namespace Notification.SignalR.Services
                 SenderID = request.SenderId,
                 SenderName = request.SenderName,
                 CreatedAt = DateTime.UtcNow,
-                IsReaded = false
+                IsReaded = false,
+                UserID = request.UserID,
             };
 
             await notificationContext.Notifications.InsertOneAsync(notification);
 
-            await hubContext.Clients.All.ReceiveMessage("test", JsonSerializer.Serialize(notification));
+            await hubContext
+                    .Clients
+                    .All
+                    .ReceiveMessage(notification.UserID, JsonSerializer.Serialize(notification));
 
             return new SendNotificationReply
             {

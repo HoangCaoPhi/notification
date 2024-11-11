@@ -22,8 +22,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
- 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapDefaultEndpoints(); 
 app.MapGrpcService<NotificationService>();
  
 if (app.Environment.IsDevelopment())
@@ -33,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseCors("AllowDevSpecificOrigin");
 }
 
+app.MapGet("test", () => "Test").RequireAuthorization();
+ 
 app.UseHttpsRedirection();
 
 app.MapHub<NotificationHub>("/notificationHub");

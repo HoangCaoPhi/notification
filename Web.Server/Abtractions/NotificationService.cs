@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Notification.Shared;
+using Shared;
 using System.Text.Json;
 using Web.Server.Models;
 
