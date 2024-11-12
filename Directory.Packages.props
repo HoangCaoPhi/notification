@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="8.2.1" />
     <PackageVersion Include="Aspire.Hosting.MongoDB" Version="8.2.2" />
+    <PackageVersion Include="Aspire.Hosting.NodeJs" Version="8.2.1" />
     <PackageVersion Include="Aspire.Hosting.SqlServer" Version="8.2.2" />
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.2.2" />
     <PackageVersion Include="Aspire.MongoDB.Driver" Version="8.2.2" />

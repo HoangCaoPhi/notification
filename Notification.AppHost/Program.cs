@@ -12,9 +12,17 @@ var mongo = builder
 var mongodb = mongo.AddDatabase("notificationdb");
 
 
+var notificationServerSocket = builder.AddNpmApp(name: "notification-socket",
+                                                 workingDirectory: "../Notification.SocketIO",
+                                                 scriptName: "start")
+                                    .WithHttpEndpoint(env: "PORT")
+                                    .WithExternalHttpEndpoints()
+                                    .PublishAsDockerFile();
+
 var notification = builder
     .AddProject<Projects.Notification_SignalR>("notification-api")
-    .WithReference(mongodb);
+    .WithReference(mongodb)
+    .WithReference(notificationServerSocket);
 
 builder
     .AddProject<Projects.Web_Server>("web-server")
