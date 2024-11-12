@@ -15,9 +15,8 @@ public class TokenProvider(IOptions<JwtOptions> jwtOptions) : ITokenProvider
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.UserName),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(ClaimTypes.NameIdentifier, user.Id)
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey));

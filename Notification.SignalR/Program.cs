@@ -1,6 +1,7 @@
 using Notification.SignalR;
 using Notification.SignalR.Hubs;
 using Notification.SignalR.Services;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +14,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowDevSpecificOrigin",
-        builder => builder.WithOrigins("https://localhost:5173") 
-                          .AllowAnyMethod()
-                          .AllowAnyHeader()
-                          .AllowCredentials());
+    options.AddDefaultPolicy(o => o.WithOrigins("https://localhost:5173")
+                                   .AllowAnyMethod()
+                                   .AllowAnyHeader()
+                                   .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -32,14 +32,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowDevSpecificOrigin");
+    app.UseCors();
 }
 
-app.MapGet("test", () => "Test").RequireAuthorization();
+app.MapGet("test", (HttpContext context) =>
+{
+    var nameIdentifier = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}).RequireAuthorization();
  
 app.UseHttpsRedirection();
 
 app.MapHub<NotificationHub>("/notificationHub");
- 
+  
 app.Run();
  

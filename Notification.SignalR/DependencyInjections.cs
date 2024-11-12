@@ -21,6 +21,6 @@ public static class DependencyInjections
             }
         });
 
-        builder.Services.AddSignalR();
+        builder.Services.AddSignalR(); 
     }
 }

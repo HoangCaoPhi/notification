@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -23,5 +24,24 @@ public sealed class JwtBearerOptionsSetup(IOptions<JwtOptions> jwtOptions) :
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
             ClockSkew = TimeSpan.FromMinutes(0),
         };
+
+        options.SaveToken = true;
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+ 
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/notificationHub")))
+                { 
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
+
     }
 }

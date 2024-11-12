@@ -36,8 +36,8 @@ namespace Notification.SignalR.Services
 
             await hubContext
                     .Clients
-                    .All
-                    .ReceiveMessage(notification.UserID, JsonSerializer.Serialize(notification));
+                    .User(request.UserID)
+                    .ReceiveMessage(request.UserID, JsonSerializer.Serialize(notification));
 
             return new SendNotificationReply
             {

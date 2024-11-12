@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
 import { Typography, Container, Box, Button, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { IHttpConnectionOptions } from '@microsoft/signalr';
 
 const HomePage: React.FC = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -15,9 +16,14 @@ const HomePage: React.FC = () => {
     }
  
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7176/notificationHub")
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
+    .withUrl("https://localhost:7176/notificationHub", {
+        accessTokenFactory: async () => {
+          return localStorage.getItem('token');
+        }
+      } as IHttpConnectionOptions)
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+  
 
     async function start() {
       try {
