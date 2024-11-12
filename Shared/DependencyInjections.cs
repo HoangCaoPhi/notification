@@ -7,6 +7,19 @@ public static class DependencyInjections
 {
     public static void AddDefaultAuthentication(this IHostApplicationBuilder builder)
     {
+        builder.Services.AddCors(options =>
+        {
+            var corsOrigin = Environment.GetEnvironmentVariable("FRONTEND_DEV_URL");
+
+            options.AddPolicy("AllowNotificationDevOrigin", policy =>
+            {
+                policy.WithOrigins(corsOrigin)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials();
+            });
+        });
+
         builder.Services.ConfigureOptions<JwtOptionsSetup>();
         builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
@@ -21,4 +34,5 @@ public static class DependencyInjections
 
         builder.Services.AddScoped<IIdentityService, IdentityService>();
     }
+ 
 }

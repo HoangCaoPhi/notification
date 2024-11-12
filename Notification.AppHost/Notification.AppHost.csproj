@@ -15,8 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Notification.SignalR\Notification.SignalR.csproj" />
-    <ProjectReference Include="..\web.client\web.client.esproj" />
-    <ProjectReference Include="..\Web.Server\Web.Server.csproj" />
+    <ProjectReference Include="..\Web.Api\Web.Api.csproj" />
   </ItemGroup>
 
 </Project>

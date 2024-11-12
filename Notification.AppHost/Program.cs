@@ -19,15 +19,29 @@ var notificationServerSocket = builder.AddNpmApp(name: "notification-socket",
                                     .WithExternalHttpEndpoints()
                                     .PublishAsDockerFile();
 
-var notification = builder
+var notificationApi = builder
     .AddProject<Projects.Notification_SignalR>("notification-api")
     .WithReference(mongodb)
     .WithReference(notificationServerSocket);
 
-builder
-    .AddProject<Projects.Web_Server>("web-server")
-    .WithReference(sqldb)
-    .WithReference(notification);
+var webApi = builder
+            .AddProject<Projects.Web_Api>("web-api")
+            .WithReference(sqldb)
+            .WithReference(notificationApi);
 
+var webFrontend = builder.AddNpmApp(name: "web-frontend",
+                                    workingDirectory: "../web.frontend",
+                                    scriptName: "dev")
+                          .WithHttpEndpoint(env: "FE_PORT")
+                          .WithExternalHttpEndpoints()
+                          .PublishAsDockerFile();
+
+
+var webApiendpoint = webApi.GetEndpoint("https");
+webFrontend.WithEnvironment("VITE_API", webApiendpoint);
+
+var webFrontendUrl = webFrontend.GetEndpoint("http");
+webApi.WithEnvironment("FRONTEND_DEV_URL", webFrontendUrl);
+notificationApi.WithEnvironment("FRONTEND_DEV_URL", webFrontendUrl);
 
 builder.Build().Run();

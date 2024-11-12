@@ -25,6 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.ApplyMigrations();
     await app.ApplySeeding();
+    app.UseCors("AllowNotificationDevOrigin");
 }
 
  

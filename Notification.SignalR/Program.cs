@@ -11,15 +11,7 @@ builder.AddApplicationServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(o => o.WithOrigins("https://localhost:5173")
-                                   .AllowAnyMethod()
-                                   .AllowAnyHeader()
-                                   .AllowCredentials());
-});
-
+ 
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -32,7 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors();
+    app.UseCors("AllowNotificationDevOrigin");
 }
 
 app.MapGet("test", (HttpContext context) =>
