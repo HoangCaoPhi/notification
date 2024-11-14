@@ -1,9 +1,11 @@
-const express = require('express');
+const express = require('express')
 
-const app = express();
+const app = express()
+
+// middleware...
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');
 });
 
-module.exports = app;
+module.exports = app
