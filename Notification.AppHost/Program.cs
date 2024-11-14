@@ -1,3 +1,5 @@
+using Aspire.Hosting;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 
@@ -19,6 +21,8 @@ var notificationServerSocket = builder.AddNpmApp(name: "notification-socket",
                                     .WithExternalHttpEndpoints()
                                     .PublishAsDockerFile();
 
+var httpNotificationServerSocketEndpoint = notificationServerSocket.GetEndpoint("http");
+
 var notificationApi = builder
     .AddProject<Projects.Notification_SignalR>("notification-api")
     .WithReference(mongodb)
@@ -27,7 +31,8 @@ var notificationApi = builder
 var webApi = builder
             .AddProject<Projects.Web_Api>("web-api")
             .WithReference(sqldb)
-            .WithReference(notificationApi);
+            .WithReference(notificationApi)
+            .WithEnvironment("Socket_Url", httpNotificationServerSocketEndpoint);
 
 var webFrontend = builder.AddNpmApp(name: "web-frontend",
                                     workingDirectory: "../web.frontend",

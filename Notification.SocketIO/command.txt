@@ -1,0 +1,1 @@
+grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./../Notification.SocketIO/src/grpc_services --grpc_out=grpc_js:./../Notification.SocketIO/src/grpc_services --proto_path=./../Shared/Protos ./../Shared/Protos/*.proto

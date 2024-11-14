@@ -27,10 +27,15 @@ public static class DependencyInjection
         builder.Services.AddScoped<ITokenProvider, TokenProvider>();    
         builder.Services.AddScoped<IAuthService, AuthService>();
 
+        // For SignalR
+        //builder.Services.AddGrpcClient<Notification.Shared.Notification.NotificationClient>
+        //                    (o => o.Address = new("https://notification-api"))
+        //                    .AddAuthToken();
 
+        // For socket 
         builder.Services.AddGrpcClient<Notification.Shared.Notification.NotificationClient>
-                            (o => o.Address = new("https://notification-api"))
-                            .AddAuthToken();
+            (o => o.Address = new(builder.Configuration["Socket_Url"]!))
+            .AddAuthToken();
     }
 
     public static IHttpClientBuilder AddAuthToken(this IHttpClientBuilder builder)
